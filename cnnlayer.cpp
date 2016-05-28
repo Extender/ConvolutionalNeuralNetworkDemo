@@ -879,7 +879,7 @@ void CNNLayer::applyConvDiffs(double ****weightDiffs, double *biasWeightDiffs, d
         double previousDelta=previousBiasWeightDiffDeltas[featureMapInThisLayer];
         double currentWeight=biasWeights[featureMapInThisLayer];
         double weightDiff=biasWeightDiffs[featureMapInThisLayer];
-        double thisDelta=-learningRate*weightDiff-weightDecay*currentWeight+momentum*previousDelta;
+        double thisDelta=(1.0-momentum)*-learningRate*weightDiff+momentum*previousDelta-weightDecay*currentWeight;
         biasWeights[featureMapInThisLayer]+=thisDelta;
         previousBiasWeightDiffDeltas[featureMapInThisLayer]=thisDelta;
     }
@@ -894,7 +894,7 @@ void CNNLayer::applyConvDiffs(double ****weightDiffs, double *biasWeightDiffs, d
                     double previousDelta=previousWeightDiffDeltas[featureMapInPreviousLayer][featureMapInThisLayer][receptiveFieldY][receptiveFieldX];
                     double currentWeight=weights[featureMapInPreviousLayer][featureMapInThisLayer][receptiveFieldY][receptiveFieldX];
                     double weightDiff=weightDiffs[featureMapInPreviousLayer][featureMapInThisLayer][receptiveFieldY][receptiveFieldX];
-                    double thisDelta=-learningRate*weightDiff-weightDecay*currentWeight+momentum*previousDelta;
+                    double thisDelta=(1.0-momentum)*-learningRate*weightDiff+momentum*previousDelta-weightDecay*currentWeight;
 
                     weights[featureMapInPreviousLayer][featureMapInThisLayer][receptiveFieldY][receptiveFieldX]+=thisDelta;
                     previousWeightDiffDeltas[featureMapInPreviousLayer][featureMapInThisLayer][receptiveFieldY][receptiveFieldX]=thisDelta;
@@ -915,7 +915,7 @@ void CNNLayer::applyFcDiffs(double ****weightDiffs, double *biasWeightDiffs, dou
         double previousDelta=previousBiasWeightDiffDeltas[featureMapInThisLayer];
         double currentWeight=biasWeights[featureMapInThisLayer];
         double weightDiff=biasWeightDiffs[featureMapInThisLayer];
-        double thisDelta=-learningRate*weightDiff-weightDecay*currentWeight+momentum*previousDelta;
+        double thisDelta=(1.0-momentum)*-learningRate*weightDiff+momentum*previousDelta-weightDecay*currentWeight;
 
         biasWeights[featureMapInThisLayer]+=thisDelta;
         previousBiasWeightDiffDeltas[featureMapInThisLayer]=thisDelta;
@@ -931,7 +931,7 @@ void CNNLayer::applyFcDiffs(double ****weightDiffs, double *biasWeightDiffs, dou
                     double previousDelta=previousWeightDiffDeltas[featureMapInPreviousLayer][y][x][featureMapInThisLayer];
                     double currentWeight=weights[featureMapInPreviousLayer][y][x][featureMapInThisLayer];
                     double weightDiff=weightDiffs[featureMapInPreviousLayer][y][x][featureMapInThisLayer];
-                    double thisDelta=-learningRate*weightDiff-weightDecay*currentWeight+momentum*previousDelta;
+                    double thisDelta=(1.0-momentum)*-learningRate*weightDiff+momentum*previousDelta-weightDecay*currentWeight;
 
                     weights[featureMapInPreviousLayer][y][x][featureMapInThisLayer]+=thisDelta;
                     previousWeightDiffDeltas[featureMapInPreviousLayer][y][x][featureMapInThisLayer]=thisDelta;
