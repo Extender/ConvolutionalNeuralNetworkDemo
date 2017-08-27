@@ -673,7 +673,7 @@ void CNNLayer::calculateConvDiffs(double ****&weightDiffs, double *&biasWeightDi
                 {
                     int32_t offsetX=-zeroPaddingX+strideX*x;
                     int32_t offsetY=-zeroPaddingY+strideY*y;
-                    double outputValue=output[featureMapInThisLayer][y][x];
+                    //double outputValue=output[featureMapInThisLayer][y][x];
 
                     // Derivative of the loss function w.r.t. the value inside of the activation function call
 

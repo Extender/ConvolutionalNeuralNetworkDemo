@@ -25,7 +25,7 @@ void TrainingThread::run()
     {
         if(stopRequested)
             break;
-        uint32_t imageId=((double)rand())/((double)RAND_MAX)*IMAGES_PER_BATCH*BATCH_COUNT;
+        uint32_t imageId=((double)rand())/((double)RAND_MAX)*(IMAGES_PER_BATCH*BATCH_COUNT-1); // Start at 0
         uint8_t imageLabel=window->imageLabels[imageId];
 
         //forwardPass(imageId);

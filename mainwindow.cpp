@@ -27,8 +27,18 @@ MainWindow::MainWindow(QWidget *parent) :
     for(uint32_t batch=0;batch<BATCH_COUNT;batch++)
     {
         QFile f(dir+QString("data_batch_")+QString::number(batch+1)+".bin");
-        if(!f.open(QFile::ReadOnly))
-            throw;
+        if(!f.exists()||!f.open(QFile::ReadOnly))
+        {
+            int m=QMessageBox::critical(this,"Error",QString("CIFAR-10 dataset not found in directory specified by IMAGE_DATA_DIR.\n\
+\n\
+Please download the CIFAR-10 dataset archive and extract it into the directory.\n\
+If you have already downloaded the dataset, copy the files into IMAGE_DATA_DIR (currently \"%DIR%\").\n\
+\n\
+Would you like to download the archive now?").replace("%DIR%",dir),QMessageBox::Yes|QMessageBox::No);
+            if(m==QMessageBox::Yes)
+                QDesktopServices::openUrl(QUrl("https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz"));
+            QApplication::exit();
+        }
         uint64_t size=f.size();
         char *fileData=(char*)malloc(size);
         f.read(fileData,size);
@@ -288,7 +298,7 @@ void MainWindow::updateExamplesSeenLbl()
 
 void MainWindow::nextBtnClicked()
 {
-    loadImage(((double)rand())/((double)RAND_MAX)*IMAGES_PER_BATCH*BATCH_COUNT);
+    loadImage(((double)rand())/((double)RAND_MAX)*(IMAGES_PER_BATCH*BATCH_COUNT-1)); // Start at 0
 }
 
 void MainWindow::classifyBtnClicked()
